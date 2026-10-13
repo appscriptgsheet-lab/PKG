@@ -10,19 +10,21 @@ export interface UserSession {
 
 export interface Guru {
   id: string;
-  nip: string;
+  pegId?: string; // ID SIMPATIKA / EMIS Kemenag (misal: 91000078102708)
+  nik?: string; // NIK KTP (misal: 1506022009780002)
+  nip: string; // NIP / NPK Kemenag (atau '-')
   nuptk?: string;
   nama: string;
   jenisKelamin: 'L' | 'P';
-  pangkatGolongan: string; // misal: Penata Muda / III/a, Penata / III/c, Pembina / IV/a
-  jabatan: string; // Guru Pertama, Guru Muda, Guru Madya, Guru Utama
+  pangkatGolongan: string; // misal: Penata Muda / III/a, Penata / III/c, Pembina / IV/a, Guru Tetap Yayasan
+  jabatan: string; // Kepala Madrasah, Wakil Kepala Madrasah, Wali Kelas VII, Kepala Perpustakaan, Guru Mapel
   mataPelajaran: string;
-  tugasTambahan?: string; // Kepala Laboratorium, Kepala Perpustakaan, Wali Kelas, Waka Kurikulum
+  tugasTambahan?: string; // misal: Wali Kelas, Kepala Perpustakaan, Waka
   pendidikanTerakhir: string;
   tmtGuru?: string;
   nomorHP?: string;
   email?: string;
-  jamMengajarMinggu: number; // default 24 jam
+  jamMengajarMinggu: number;
   statusPenilaian: 'Belum Dinilai' | 'Dalam Proses' | 'Selesai';
   dokumenBukti?: {
     nama: string;
@@ -125,11 +127,9 @@ export interface MadrasahProfile {
   tahunPelajaran: string;
 }
 
-export interface GoogleSheetConfig {
-  spreadsheetId: string;
-  sheetNameRekap: string;
-  webAppUrl: string;
-  apiKey?: string;
-  lastSyncedAt?: string;
-  isAutoSync: boolean;
+export interface DatabaseConfig {
+  lastBackupAt?: string;
+  totalRecords: number;
+  autoSave: boolean;
 }
+

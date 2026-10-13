@@ -63,13 +63,13 @@ export const AuthModal: React.FC<AuthModalProps> = ({
         
         {/* Header */}
         <div className="flex items-start justify-between border-b border-slate-100 pb-4">
-          <div className="flex items-center gap-2.5">
-            <div className="w-10 h-10 rounded-xl bg-emerald-800 text-white flex items-center justify-center font-bold">
-              <Building2 className="w-5 h-5 text-emerald-100" />
+          <div className="flex items-center gap-3">
+            <div className="w-10 h-10 rounded-xl bg-emerald-800 text-white flex items-center justify-center font-bold text-sm shadow-xs shrink-0">
+              <ShieldCheck className="w-5 h-5 text-emerald-200" />
             </div>
             <div>
-              <h2 className="text-base font-bold text-slate-900">Autentikasi Terpisah SIPKG-MTs</h2>
-              <p className="text-xs text-slate-500">Pilih portal peran akun untuk mengakses sistem</p>
+              <h2 className="text-base font-bold text-slate-900">Autentikasi Peran SIPKG-MTs</h2>
+              <p className="text-xs text-slate-500">{profile.namaMadrasah} Semau</p>
             </div>
           </div>
           <button onClick={onClose} className="p-1 text-slate-400 hover:text-slate-600 rounded-lg">
@@ -177,12 +177,18 @@ export const AuthModal: React.FC<AuthModalProps> = ({
                     onClick={() => handleGuruLogin(g.id)}
                     className="w-full text-left p-2.5 rounded-xl border border-slate-200 hover:border-emerald-600 hover:bg-emerald-50/40 transition-colors flex items-center justify-between group"
                   >
-                    <div>
-                      <div className="font-bold text-slate-900 group-hover:text-emerald-800">
+                    <div className="flex-1 min-w-0 pr-2">
+                      <div className="font-bold text-slate-900 group-hover:text-emerald-800 truncate">
                         {g.nama}
                       </div>
-                      <div className="text-[11px] text-slate-500">
-                        Mapel: <strong className="text-slate-700">{g.mataPelajaran}</strong> · NIP: <span className="font-mono-numbers">{g.nip}</span>
+                      <div className="text-[11px] text-slate-600 flex flex-wrap gap-x-2 gap-y-0.5 mt-0.5">
+                        <span className="font-medium text-emerald-800">{g.mataPelajaran}</span>
+                        {g.jabatan && g.jabatan !== 'Guru Mata Pelajaran' && (
+                          <span className="text-slate-500 font-semibold">• {g.jabatan}</span>
+                        )}
+                      </div>
+                      <div className="text-[10px] font-mono-numbers text-slate-400 mt-0.5">
+                        PEG ID: <span className="text-slate-600 font-medium">{g.pegId || '-'}</span> | NIK: <span className="text-slate-600 font-medium">{g.nik || '-'}</span>
                       </div>
                     </div>
                     <ArrowRight className="w-4 h-4 text-slate-400 group-hover:text-emerald-700 shrink-0" />

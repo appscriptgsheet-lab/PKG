@@ -46,6 +46,8 @@ export const MenuGuruDinilai: React.FC<MenuGuruDinilaiProps> = ({
   const [editingGuruId, setEditingGuruId] = useState<string | null>(null);
 
   const [formNama, setFormNama] = useState('');
+  const [formPegId, setFormPegId] = useState('');
+  const [formNik, setFormNik] = useState('');
   const [formNip, setFormNip] = useState('');
   const [formNuptk, setFormNuptk] = useState('');
   const [formJK, setFormJK] = useState<'L' | 'P'>('L');
@@ -59,10 +61,14 @@ export const MenuGuruDinilai: React.FC<MenuGuruDinilaiProps> = ({
   const [formEmail, setFormEmail] = useState('');
 
   const filteredGuru = guruList.filter((g) => {
+    const q = searchQuery.toLowerCase();
     const matchSearch =
-      g.nama.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      g.nip.includes(searchQuery) ||
-      g.mataPelajaran.toLowerCase().includes(searchQuery.toLowerCase());
+      g.nama.toLowerCase().includes(q) ||
+      g.nip.includes(q) ||
+      (g.pegId && g.pegId.includes(q)) ||
+      (g.nik && g.nik.includes(q)) ||
+      g.mataPelajaran.toLowerCase().includes(q) ||
+      (g.jabatan && g.jabatan.toLowerCase().includes(q));
 
     const matchStatus = filterStatus === 'all' || g.statusPenilaian === filterStatus;
     return matchSearch && matchStatus;
@@ -71,6 +77,8 @@ export const MenuGuruDinilai: React.FC<MenuGuruDinilaiProps> = ({
   const handleOpenAddModal = () => {
     setEditingGuruId(null);
     setFormNama('');
+    setFormPegId('');
+    setFormNik('');
     setFormNip('');
     setFormNuptk('');
     setFormJK('L');
@@ -88,6 +96,8 @@ export const MenuGuruDinilai: React.FC<MenuGuruDinilaiProps> = ({
   const handleOpenEditModal = (guru: Guru) => {
     setEditingGuruId(guru.id);
     setFormNama(guru.nama);
+    setFormPegId(guru.pegId || '');
+    setFormNik(guru.nik || '');
     setFormNip(guru.nip);
     setFormNuptk(guru.nuptk || '');
     setFormJK(guru.jenisKelamin);
@@ -112,6 +122,8 @@ export const MenuGuruDinilai: React.FC<MenuGuruDinilaiProps> = ({
         onUpdateGuru({
           ...existing,
           nama: formNama,
+          pegId: formPegId,
+          nik: formNik,
           nip: formNip,
           nuptk: formNuptk,
           jenisKelamin: formJK,
@@ -128,6 +140,8 @@ export const MenuGuruDinilai: React.FC<MenuGuruDinilaiProps> = ({
     } else {
       onAddGuru({
         nama: formNama,
+        pegId: formPegId,
+        nik: formNik,
         nip: formNip,
         nuptk: formNuptk,
         jenisKelamin: formJK,
@@ -230,9 +244,14 @@ export const MenuGuruDinilai: React.FC<MenuGuruDinilaiProps> = ({
                       </td>
 
                       <td className="px-4 py-3">
-                        <div className="font-semibold text-slate-900">{guru.nama}</div>
-                        <div className="text-[11px] font-mono-numbers text-slate-500">
-                          NIP. {guru.nip}
+                        <div className="font-bold text-slate-900">{guru.nama}</div>
+                        <div className="text-[10px] font-mono-numbers text-slate-500 flex flex-wrap gap-x-2 gap-y-0.5 mt-0.5">
+                          {guru.pegId && (
+                            <span>PEG: <strong className="text-emerald-800">{guru.pegId}</strong></span>
+                          )}
+                          {guru.nik && (
+                            <span>NIK: <span className="text-slate-600">{guru.nik}</span></span>
+                          )}
                         </div>
                       </td>
 
@@ -496,6 +515,30 @@ export const MenuGuruDinilai: React.FC<MenuGuruDinilaiProps> = ({
                     value={formNip}
                     onChange={(e) => setFormNip(e.target.value)}
                     className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-600"
+                  />
+                </div>
+              </div>
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                <div>
+                  <label className="block font-semibold text-slate-700 mb-1">PEG ID (Simpatika / EMIS)</label>
+                  <input
+                    type="text"
+                    placeholder="Contoh: 91000078102708"
+                    value={formPegId}
+                    onChange={(e) => setFormPegId(e.target.value)}
+                    className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-600 font-mono-numbers"
+                  />
+                </div>
+
+                <div>
+                  <label className="block font-semibold text-slate-700 mb-1">NIK (Nomor Induk Kependudukan)</label>
+                  <input
+                    type="text"
+                    placeholder="Contoh: 1506022009780002"
+                    value={formNik}
+                    onChange={(e) => setFormNik(e.target.value)}
+                    className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-600 font-mono-numbers"
                   />
                 </div>
               </div>

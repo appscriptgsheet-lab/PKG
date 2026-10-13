@@ -1,6 +1,6 @@
 {
   "name": "SIPKG MTs - Penilaian Kinerja Guru & Supervisi",
-  "description": "Aplikasi Penilaian Kinerja Guru (PKG) 14 Kompetensi dan Supervisi Akademik Madrasah Tsanawiyah terintegrasi Google Sheets dan rekapitulasi otomatis.",
+  "description": "Aplikasi Penilaian Kinerja Guru (PKG) 14 Kompetensi dan Supervisi Akademik Madrasah Tsanawiyah dengan rekapitulasi nilai otomatis dan ekspor Excel.",
   "requestFramePermissions": [],
   "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
 }

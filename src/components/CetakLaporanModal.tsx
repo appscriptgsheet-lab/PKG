@@ -11,6 +11,7 @@ import {
 import { Guru, MadrasahProfile, PenilaianPKGGuru, SupervisiGuru } from '../types';
 import { KOMPETENSI_PKG_14 } from '../data/standarPKG';
 import { getParameterGolongan } from '../services/pkgCalculator';
+import { KopMadrasahResmi } from './Logos';
 
 interface CetakLaporanModalProps {
   guruList: Guru[];
@@ -142,14 +143,14 @@ export const CetakLaporanModal: React.FC<CetakLaporanModalProps> = ({
         <div className="p-6 sm:p-8 overflow-y-auto bg-slate-100 flex justify-center">
           <div className="bg-white w-full max-w-[210mm] min-h-[297mm] p-8 sm:p-12 shadow-md border border-slate-200 text-black text-xs font-sans print-page">
             
-            {/* KOP RESMI MADRASAH */}
-            <div className="border-b-2 border-black pb-3 mb-6 text-center">
-              <div className="text-xs uppercase tracking-widest font-bold">KEMENTERIAN AGAMA REPUBLIK INDONESIA</div>
-              <div className="text-sm uppercase tracking-wide font-bold">KANTOR KEMENTERIAN AGAMA KABUPATEN/KOTA PRESTASI</div>
-              <div className="text-base uppercase tracking-tight font-extrabold">{profile.namaMadrasah}</div>
-              <div className="text-[10px] text-slate-600 mt-0.5">
-                {profile.alamat} · NSM: {profile.nsm} · NPSN: {profile.npsn}
-              </div>
+            {/* KOP RESMI SURAT KEDINASAN (STANDAR TEKS RESMI TANPA LOGO) */}
+            <div className="mb-6">
+              <KopMadrasahResmi 
+                namaMadrasah={profile.namaMadrasah}
+                nsm={profile.nsm}
+                npsn={profile.npsn}
+                alamat={profile.alamat}
+              />
             </div>
 
             {/* FORMAT 1C: REKAPITULASI HASIL PENILAIAN KINERJA GURU */}

@@ -6,11 +6,11 @@ import {
   Download, 
   Search, 
   Filter, 
-  RefreshCw, 
   TrendingUp, 
   Award, 
   CheckCircle2,
-  ChevronRight
+  ChevronRight,
+  Database
 } from 'lucide-react';
 import { Guru, MadrasahProfile, PenilaianPKGGuru, SupervisiGuru } from '../types';
 import { exportToCSV, exportToExcel } from '../services/googleSheetService';
@@ -20,11 +20,8 @@ interface MenuRekapitulasiProps {
   penilaianPKG: Record<string, PenilaianPKGGuru>;
   supervisiList: Record<string, SupervisiGuru>;
   profile: MadrasahProfile;
-  isSheetConnected: boolean;
-  onOpenSheetModal: () => void;
+  onOpenDatabaseModal: () => void;
   onOpenPrintModal: (guruId?: string) => void;
-  onSyncGoogleSheet: () => void;
-  isSyncing: boolean;
 }
 
 export const MenuRekapitulasi: React.FC<MenuRekapitulasiProps> = ({
@@ -32,11 +29,8 @@ export const MenuRekapitulasi: React.FC<MenuRekapitulasiProps> = ({
   penilaianPKG,
   supervisiList,
   profile,
-  isSheetConnected,
-  onOpenSheetModal,
+  onOpenDatabaseModal,
   onOpenPrintModal,
-  onSyncGoogleSheet,
-  isSyncing,
 }) => {
   const [searchQuery, setSearchQuery] = useState('');
   const [filterPredikat, setFilterPredikat] = useState('all');
@@ -110,16 +104,12 @@ export const MenuRekapitulasi: React.FC<MenuRekapitulasiProps> = ({
           </button>
 
           <button
-            onClick={onSyncGoogleSheet}
-            disabled={isSyncing}
-            className={`px-3.5 py-2 text-xs font-semibold rounded-xl border transition-colors flex items-center gap-1.5 ${
-              isSheetConnected
-                ? 'bg-emerald-50 border-emerald-200 text-emerald-800 hover:bg-emerald-100'
-                : 'bg-slate-100 border-slate-200 text-slate-700 hover:bg-slate-200'
-            }`}
+            onClick={handleExportCSV}
+            className="px-3 py-2 text-xs font-semibold rounded-xl border border-slate-300 text-slate-700 hover:bg-slate-50 transition-colors flex items-center gap-1.5"
+            title="Unduh format CSV"
           >
-            <RefreshCw className={`w-3.5 h-3.5 ${isSyncing ? 'animate-spin text-emerald-700' : ''}`} />
-            <span>{isSyncing ? 'Sinkron ke Sheet...' : 'Kirim ke Google Sheet'}</span>
+            <Download className="w-4 h-4" />
+            <span>CSV</span>
           </button>
 
           <button
@@ -128,6 +118,15 @@ export const MenuRekapitulasi: React.FC<MenuRekapitulasiProps> = ({
           >
             <Printer className="w-4 h-4" />
             <span>Cetak Rekap Resmi</span>
+          </button>
+
+          <button
+            onClick={onOpenDatabaseModal}
+            className="px-3 py-2 text-xs font-semibold rounded-xl border border-slate-200 bg-slate-50 text-slate-700 hover:bg-slate-100 transition-colors flex items-center gap-1.5"
+            title="Kelola Cadangan Data"
+          >
+            <Database className="w-4 h-4 text-emerald-700" />
+            <span>Cadangan Data</span>
           </button>
         </div>
       </div>
@@ -211,14 +210,6 @@ export const MenuRekapitulasi: React.FC<MenuRekapitulasiProps> = ({
               <option value="Belum">Belum Dinilai</option>
             </select>
           </div>
-
-          <button
-            onClick={handleExportCSV}
-            className="px-2.5 py-1.5 text-xs font-medium border border-slate-300 rounded-lg text-slate-700 hover:bg-slate-50"
-            title="Download file CSV"
-          >
-            CSV
-          </button>
         </div>
       </div>
 
@@ -259,8 +250,11 @@ export const MenuRekapitulasi: React.FC<MenuRekapitulasiProps> = ({
                     </td>
 
                     <td className="px-4 py-3 border-r border-slate-200">
-                      <div className="font-semibold text-slate-900">{guru.nama}</div>
-                      <div className="text-[10px] font-mono-numbers text-slate-500">NIP. {guru.nip}</div>
+                      <div className="font-bold text-slate-900">{guru.nama}</div>
+                      <div className="text-[10px] font-mono-numbers text-slate-500 flex flex-wrap gap-x-2 gap-y-0.5 mt-0.5">
+                        {guru.pegId && <span>PEG: <strong className="text-emerald-800">{guru.pegId}</strong></span>}
+                        {guru.nik && <span>NIK: {guru.nik}</span>}
+                      </div>
                     </td>
 
                     <td className="px-3 py-3 text-slate-600 border-r border-slate-200 whitespace-nowrap">
@@ -330,14 +324,14 @@ export const MenuRekapitulasi: React.FC<MenuRekapitulasiProps> = ({
         <div className="flex items-center gap-2">
           <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
           <span className="text-slate-600">
-            Format data tabel ini telah disinkronkan 100% dengan lembar kerja <strong>REKAP_PKG_MTS</strong> pada berkas template XLSM Kementerian Agama.
+            Format data tabel ini terkonfigurasi 100% kompatibel dengan format resmi <strong>REKAP_PKG_MTS</strong> Kementerian Agama dan dapat diekspor langsung ke berkas Excel (.xlsx).
           </span>
         </div>
         <button
-          onClick={onOpenSheetModal}
+          onClick={onOpenDatabaseModal}
           className="text-emerald-700 hover:text-emerald-800 font-semibold flex items-center gap-1 shrink-0 ml-4 hover:underline"
         >
-          <span>Konfigurasi Google Sheet</span>
+          <span>Kelola Basis Data</span>
           <ChevronRight className="w-3.5 h-3.5" />
         </button>
       </div>

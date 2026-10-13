@@ -3,6 +3,8 @@ import { Guru, MadrasahProfile, PenilaianPKGGuru, SupervisiGuru } from '../types
 
 export interface RekapRowExport {
   No: number;
+  PEG_ID: string;
+  NIK: string;
   NIP: string;
   NUPTK: string;
   Nama_Guru: string;
@@ -39,6 +41,8 @@ export function generateRekapDataRows(
 
     return {
       No: index + 1,
+      PEG_ID: guru.pegId || '-',
+      NIK: guru.nik || '-',
       NIP: guru.nip,
       NUPTK: guru.nuptk || '-',
       Nama_Guru: guru.nama,
@@ -81,6 +85,8 @@ export function exportToExcel(
   // Sheet 2: DATA_GURU_MTS
   const dataGuruExport = guruList.map((g, idx) => ({
     No: idx + 1,
+    PEG_ID: g.pegId || '',
+    NIK: g.nik || '',
     NIP: g.nip,
     NUPTK: g.nuptk || '',
     Nama_Lengkap: g.nama,

@@ -85,11 +85,12 @@ export const DashboardGuru: React.FC<DashboardGuruProps> = ({
                 {guru.statusPenilaian}
               </span>
             </div>
-            <div className="mt-1 text-xs text-slate-500 flex flex-wrap items-center gap-x-4 gap-y-1">
-              <span>NIP. <strong className="font-mono-numbers text-slate-700">{guru.nip}</strong></span>
+            <div className="mt-1 text-xs text-slate-500 flex flex-wrap items-center gap-x-3 gap-y-1">
+              {guru.pegId && <span>PEG ID: <strong className="font-mono-numbers text-emerald-800 font-bold">{guru.pegId}</strong></span>}
+              {guru.nik && <span>NIK: <strong className="font-mono-numbers text-slate-700">{guru.nik}</strong></span>}
               <span>Pangkat: <strong className="text-slate-700">{guru.pangkatGolongan}</strong></span>
-              <span>Mapel: <strong className="text-emerald-700">{guru.mataPelajaran}</strong></span>
-              {guru.tugasTambahan && (
+              <span>Mapel: <strong className="text-emerald-700 font-bold">{guru.mataPelajaran}</strong></span>
+              {guru.tugasTambahan && guru.tugasTambahan !== '-' && (
                 <span>Tugas: <strong className="text-slate-700">{guru.tugasTambahan}</strong></span>
               )}
             </div>
